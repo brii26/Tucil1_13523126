@@ -12,8 +12,27 @@ static void printShapes(char[][][] shapeMatrices) {
             System.out.println(); 
         }
         System.out.println(); 
+        }
     }
-}
+
+    public static char[][] mirror(char[][]matrix, int row, int column){
+        char[][] mirrored_matrix = new char[row][column];
+        for (int i = 0 ; i < row ; i++){
+            for (int j = 0 ; j < column ; j++){
+                mirrored_matrix[i][j] = matrix[i][column-j-1];
+            }
+        }
+        return mirrored_matrix;
+    }
+    public static char[][] rotate(char[][]matrix, int row, int column){
+        char[][] transposed_matrix = new char[column][row];
+        for ( int i = 0 ; i < row ; i ++){
+            for ( int j = 0 ; j < column ; j++){
+                transposed_matrix[i][j] = matrix[j][i];
+            }
+        }
+        return mirror(transposed_matrix, row, column);
+    }
 
     public static void main(String[] args){
         int[] BoardSpecs = ReadFile.BoardSpecs("src/input.txt");
