@@ -1,3 +1,4 @@
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -29,6 +30,7 @@ public class ReadFile{
         try(BufferedReader reader = new BufferedReader(new FileReader(filename))){
             String Line2 = reader.readLine();
             Line2 = reader.readLine();
+            Line2 = Line2.replaceAll("\\s+","");
             if ( Line2 != null){
                 return Line2;
             }
@@ -48,33 +50,98 @@ public class ReadFile{
         return false;
     }
 
-    static char[][][] Shapes(String filename, int number_of_shapes){
+    static char[][] adjustShape(char[][] block, int blockRow, int blockCol) {
+        ArrayList<Integer> rowRemoval = new ArrayList<>();
+        ArrayList<Integer> colRemoval = new ArrayList<>();
+        
+        for (int i = 0; i < blockRow; i++) {
+            boolean empty = true;
+            for (int j = 0; j < blockCol; j++) {
+                if (block[i][j] != '.') {
+                    empty = false;
+                    break;
+                }
+            }
+            if (empty) {
+                rowRemoval.add(i);
+            }
+        }
+        
+        for (int j = 0; j < blockCol; j++) {
+            boolean empty = true;
+            for (int i = 0; i < blockRow; i++) {
+                if (block[i][j] != '.') {
+                    empty = false;
+                    break;
+                }
+            }
+            if (empty) {
+                colRemoval.add(j);
+            }
+        }
+
+        int newRows = blockRow - rowRemoval.size();
+        int newCols = blockCol - colRemoval.size();
+        char[][] adjusted = new char[newRows][newCols];
+        
+        int newRow = 0;
+        for (int i = 0; i < blockRow; i++) {
+            if (!rowRemoval.contains(i)) {
+                int newCol = 0;
+                for (int j = 0; j < blockCol; j++) {
+                    if (!colRemoval.contains(j)) {
+                        adjusted[newRow][newCol] = block[i][j];
+                        newCol++;
+                    }
+                }
+                newRow++;
+            }
+        }
+        
+        return adjusted;
+    }
+
+    static char[][][] Shapes(String filename, int number_of_shapes) {
         char[][][] store_of_shapes = new char[number_of_shapes][][];
-        try(BufferedReader reader = new BufferedReader(new FileReader(filename))){
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             String line = reader.readLine();
             line = reader.readLine();
             line = reader.readLine();
-            for ( int shapeIndex = 0 ; shapeIndex < number_of_shapes; shapeIndex++){
+            String words = line.replaceAll("\\s+","");
+            
+            for (int shapeIndex = 0; shapeIndex < number_of_shapes; shapeIndex++) {
+                words = line.replaceAll("\\s+","");
                 ArrayList<String> shapeLine = new ArrayList<>();
-                char Alphabetic_id = (char) ('A' + shapeIndex);
-                while(line != null && stillOneShape((char)(Alphabetic_id), line)){
+                char Alphabetic_id = words.charAt(0);
+                
+                while (line != null && stillOneShape(Alphabetic_id, line)) {
                     shapeLine.add(line);
                     line = reader.readLine();
                 }
-
-                int longest_column = shapeLine.stream().mapToInt(String::length).max().orElse(0);
-
-                char[][] shapeMatrix = new char [shapeLine.size()][longest_column];
-                for( int k = 0 ; k < shapeLine.size(); k++){
-                    for( int x = 0 ; x < longest_column ; x++){
-                        shapeMatrix[k][x] = (x < shapeLine.get(k).length()) ?  shapeLine.get(k).charAt(x) : ' ';
+    
+                if (!shapeLine.isEmpty()) {
+                    int longest_column = shapeLine.stream().mapToInt(String::length).max().orElse(0);
+    
+                    char[][] shapeMatrix = new char[shapeLine.size()][longest_column];
+                    
+                    for (int k = 0; k < shapeLine.size(); k++) {
+                        String currentLine = shapeLine.get(k);
+                        for (int x = 0; x < longest_column; x++) {
+                            char pushBackChar = '.'; 
+                            if (x < currentLine.length()) {
+                                pushBackChar = currentLine.charAt(x);
+                                if (pushBackChar == ' ') {
+                                    pushBackChar = '.';
+                                }
+                            }
+                            shapeMatrix[k][x] = pushBackChar;
+                        }
                     }
+                    store_of_shapes[shapeIndex] = adjustShape(shapeMatrix, shapeMatrix.length, shapeMatrix[0].length);
                 }
-                store_of_shapes[shapeIndex] = shapeMatrix;
             }
-        }
-        catch(IOException lol){
-            System.out.println(lol);
+        } catch (IOException lol) {
+            System.out.println(lol.getMessage());
         }
         return store_of_shapes;
     }
