@@ -1,11 +1,16 @@
+package main.logic;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Main {
+import main.models.ReadFile;
+import main.models.WriteFile;
+
+
+public class GameManager {
 static String filename = "test/input.txt";
 static long attempt = 0;
-static boolean solutionFound = false;
-static char[][] grid_solution;
+public static boolean solutionFound = false;
+public static char[][] grid_solution;
 static long startTime;
 static long endTime;
     

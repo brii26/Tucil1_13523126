@@ -1,3 +1,5 @@
+package main.models;
+
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -6,7 +8,7 @@ import java.util.ArrayList;
 
 public class ReadFile{
 
-    static int[] BoardSpecs(String filename){
+    public static int[] BoardSpecs(String filename){
         try(BufferedReader reader = new BufferedReader( new FileReader(filename))){
             String line = reader.readLine();
             if (line != null){
@@ -26,7 +28,7 @@ public class ReadFile{
         return new int[0];
     }
 
-    static String configuration(String filename){
+    public static String configuration(String filename){
         try(BufferedReader reader = new BufferedReader(new FileReader(filename))){
             String Line2 = reader.readLine();
             Line2 = reader.readLine();
@@ -50,7 +52,7 @@ public class ReadFile{
         return false;
     }
 
-    static char[][] adjustShape(char[][] block, int blockRow, int blockCol) {
+    private static char[][] adjustShape(char[][] block, int blockRow, int blockCol) {
         ArrayList<Integer> rowRemoval = new ArrayList<>();
         ArrayList<Integer> colRemoval = new ArrayList<>();
         
@@ -101,7 +103,7 @@ public class ReadFile{
         return adjusted;
     }
 
-    static char[][][] Shapes(String filename, int number_of_shapes) {
+    public static char[][][] Shapes(String filename, int number_of_shapes) {
         char[][][] store_of_shapes = new char[number_of_shapes][][];
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             String line = reader.readLine();
