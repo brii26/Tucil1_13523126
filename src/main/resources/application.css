@@ -1,6 +1,6 @@
 .root {
-    -fx-background-color: #f0f0f0;
-    background-color: #f0f0f0;
+    -fx-background-color: black;
+    background-color: black;
 }
 
 .label {
@@ -12,7 +12,7 @@
 #homepagetitle{
     -fx-font-weight: bold;
     -fx-font-size: 50px;
-    -fx-text-fill: black;
+    -fx-text-fill: white;
 }
 
 .button {
@@ -25,14 +25,28 @@
 }
 
 #saveContainer{
-    -fx-background-color: purple;
+    -fx-background-color: #9593a3;
+    -fx-border-color: black;
+    -fx-border-width: 0.5px;
+    -fx-border-style: solid;
 }
 
 
 #uploadContainer{
-    -fx-background-color: purple;
+    -fx-background-color: #9593a3;
+    -fx-border-color: black;
+    -fx-border-width: 0.5px;
+    -fx-border-style: solid;
 }
 
-#uploadFileTitle{
+#statsContainer{
+
+}
+
+#containerTitle {
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
     -fx-background-color: #007ACC;
+    -fx-border-width: 0.5px 0 0 0;
+    -fx-border-color: black;
 }
