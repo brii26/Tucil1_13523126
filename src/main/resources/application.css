@@ -1,14 +1,38 @@
 .root {
     -fx-background-color: #f0f0f0;
+    background-color: #f0f0f0;
 }
 
 .label {
     -fx-font-size: 18px;
+    font-size: 18px;
     -fx-text-fill: #333333;
+}
+
+#homepagetitle{
+    -fx-font-weight: bold;
+    -fx-font-size: 50px;
+    -fx-text-fill: black;
 }
 
 .button {
     -fx-font-size: 16px;
+    font-size: 16px;
     -fx-background-color: #007ACC;
+    background-color: #007ACC;
+    font-size: 16px;
     -fx-text-fill: #ffffff;
+}
+
+#saveContainer{
+    -fx-background-color: purple;
+}
+
+
+#uploadContainer{
+    -fx-background-color: purple;
+}
+
+#uploadFileTitle{
+    -fx-background-color: #007ACC;
 }

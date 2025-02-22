@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="main.controllers.MainController" prefWidth="800" prefHeight="600"
+            minWidth="800" minHeight="600">
+  
+    <!-- upload container -->
+    <AnchorPane fx:id="uploadContainer" prefWidth="220" prefHeight="200" 
+                AnchorPane.topAnchor="50" AnchorPane.leftAnchor="20">
+        <!-- upload title -->
+        <Label text="Upload File" fx:id="uploadFileTitle"/>
+        <VBox alignment="CENTER" spacing="10" prefWidth="220" prefHeight="100">
+            <Button text="Select File" fx:id="selectFileButton"/>
+            <Button text="Upload" fx:id="uploadButton"/>
+        </VBox>
+    </AnchorPane>
+    
+    <!-- save container -->
+    <AnchorPane fx:id="saveContainer" prefWidth="220" prefHeight="200" 
+                AnchorPane.topAnchor="380" AnchorPane.leftAnchor="20">
+        <VBox alignment="CENTER" spacing="10" prefWidth="220" prefHeight="100">
+            <Button text="Save As..." fx:id="saveAsButton"/>
+            <Button text="Save" fx:id="saveButton"/>
+        </VBox>
+    </AnchorPane>
+    
+    <!-- back button -->
+    <Button text="Back" onAction="#handleBackButton" fx:id="back_button"
+            AnchorPane.leftAnchor="9" AnchorPane.bottomAnchor="9"/>
+    
+    <!-- reset button -->
+    <Button text="Reset" fx:id="reset_button"
+            AnchorPane.rightAnchor="9" AnchorPane.bottomAnchor="9"/>
+    
+</AnchorPane>
