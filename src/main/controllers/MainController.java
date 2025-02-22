@@ -12,10 +12,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextInputDialog;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Optional;
 import main.models.*;
 import main.logic.*;
 import javafx.fxml.FXML;
@@ -66,8 +64,7 @@ public class MainController {
             solutionResult.setText(currentPuzzleResult.isSolutionFound() ? "Solution: Found!" : "Solution: Not Found!");
             attemptsResult.setText("Attempts: " + currentPuzzleResult.getAttempts());
             timeResult.setText("Time: " + currentPuzzleResult.getTime() + " ms");
-            
-            if (currentPuzzleResult.getGridSolution() != null) {
+            if (currentPuzzleResult.getGridSolution() != null && currentPuzzleResult.isSolutionFound()) {
                 updateGrid(currentPuzzleResult.getGridSolution());
             }
         } else {
@@ -192,35 +189,31 @@ public class MainController {
 
     @FXML
     private void handleSavetxt(javafx.event.ActionEvent event) {
-        if (currentPuzzleResult.isSolutionFound() == false){
-                Alert alert = new Alert(AlertType.INFORMATION); 
-                alert.setTitle("not Found");
-                alert.setHeaderText("Can't Find Solution!"); 
-                alert.showAndWait(); 
+        if (!currentPuzzleResult.isSolutionFound()) {
+            showOkDialog("Not Found", "Can't Find Solution!");
+            return;
         }
-        else{
-            TextInputDialog dialog = new TextInputDialog("solution");
-            dialog.setTitle("Save Solution");
-            dialog.setHeaderText("Enter a name for the text file:");
-            dialog.setContentText("Filename:");
-
-            Optional<String> result = dialog.showAndWait();
-
-            result.ifPresent(filename -> {
-                if (!filename.endsWith(".txt")) {
-                    filename += ".txt";
-                }
-
-                File saveDir = new File("src/test");
-                if (!saveDir.exists()) {
-                    saveDir.mkdirs(); 
-                }
-
-                File outputFile = new File(saveDir, filename);
-                WriteFile.writeSolutionBoard(currentPuzzleResult.getGridSolution(), outputFile.getAbsolutePath());
-                System.out.println("File saved at: " + outputFile.getAbsolutePath());
-            });
+    
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save Solution Text File");
+        fileChooser.getExtensionFilters().addAll(
+            new FileChooser.ExtensionFilter("Text files (*.txt)", "*.txt")
+        );
+    
+        File saveDir = new File("src/test");
+        if (!saveDir.exists() && !saveDir.mkdirs()) {
+            showOkDialog("Error", "Failed to create directory: " + saveDir.getAbsolutePath());
+            return;
         }
+        
+        fileChooser.setInitialDirectory(saveDir);
+        fileChooser.setInitialFileName("solution.txt");
+    
+        File outputFile = fileChooser.showSaveDialog(((Node) event.getSource()).getScene().getWindow());
+        if (outputFile == null) return; 
+    
+        WriteFile.writeSolutionBoard(currentPuzzleResult.getGridSolution(), outputFile.getAbsolutePath());
+        showOkDialog("yey", "SAVED!");
     }
 
     @FXML
