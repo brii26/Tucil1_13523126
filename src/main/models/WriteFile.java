@@ -7,7 +7,7 @@ import java.io.IOException;
 public class WriteFile {
 
     public static void writeSolutionBoard(char[][]grid, String file_input_name){
-        String outputFile = "test\\" + file_input_name +".txt";
+        String outputFile = file_input_name;
         try (FileWriter writer = new FileWriter(outputFile)){
             for(char[] row: grid){
                 for(char c : row){

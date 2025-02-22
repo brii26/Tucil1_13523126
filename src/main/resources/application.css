@@ -1,6 +1,6 @@
 .root {
-    -fx-background-color: black;
-    background-color: black;
+    -fx-background-color: #565079;
+    background-color: #565079;
 }
 
 .label {
@@ -24,29 +24,38 @@
     -fx-text-fill: #ffffff;
 }
 
-#saveContainer{
+#saveContainer, #uploadContainer{
     -fx-background-color: #9593a3;
     -fx-border-color: black;
     -fx-border-width: 0.5px;
     -fx-border-style: solid;
 }
 
-
-#uploadContainer{
+#resultContainer{
     -fx-background-color: #9593a3;
     -fx-border-color: black;
     -fx-border-width: 0.5px;
     -fx-border-style: solid;
+    -fx-text-fill: #ffffff;
+    -fx-alignment: center-left;
+    -fx-text-alignment: left;  
 }
+
 
 #statsContainer{
 
 }
 
-#containerTitle {
+#uploadTitle, #saveTitle, #resultTitle {
     -fx-font-weight: bold;
-    -fx-text-fill: white;
     -fx-background-color: #007ACC;
     -fx-border-width: 0.5px 0 0 0;
     -fx-border-color: black;
+    -fx-text-fill: #ffffff;
+}
+
+
+#solutionResult, #attemptsResult, #timeResult{
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 12px 0;
 }

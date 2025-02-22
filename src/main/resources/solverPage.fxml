@@ -3,54 +3,74 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
 <AnchorPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="main.controllers.MainController" prefWidth="800" prefHeight="600"
-            minWidth="800" minHeight="600">
-  
-    <!-- upload container -->
-    <AnchorPane fx:id="uploadContainer" prefWidth="220" prefHeight="260" 
-                AnchorPane.topAnchor="70" AnchorPane.leftAnchor="20">
-        <!-- upload title: stretches full width and centers text -->
-        <Label text="Upload File" fx:id="containerTitle"
+    fx:controller="main.controllers.MainController" prefWidth="800" prefHeight="600" minWidth="800" minHeight="600">
+    
+    <!-- grid container-->
+    <AnchorPane fx:id="gridContainer" prefWidth="750" prefHeight="750" 
+                AnchorPane.topAnchor="70" AnchorPane.leftAnchor="400"
+                style="-fx-background-color: white; -fx-border-color: #8C82AB; -fx-border-width: 10;">
+        <GridPane fx:id="gridPane"
+                  AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0"
+                  AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="0"/>
+    </AnchorPane>
+    
+    <!-- Upload container -->
+    <AnchorPane fx:id="uploadContainer" prefWidth="220" prefHeight="260" AnchorPane.topAnchor="90" AnchorPane.leftAnchor="40">
+        <Label text="Upload File" fx:id="uploadTitle"
                AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
                alignment="CENTER" style="-fx-text-alignment: center;" prefHeight="50"/>
-        <!-- VBox holding buttons -->
         <VBox alignment="CENTER" spacing="10" prefWidth="220" prefHeight="100" AnchorPane.topAnchor="80">
-            <Button text="Select File" fx:id="selectFileButton">
+            <Button text="Select File" fx:id="selectFileButton" onAction="#handleSelectFile">
                 <VBox.margin>
                     <Insets top="10" right="0" bottom="20" left="0"/>
                 </VBox.margin>
             </Button>
-            <Button text="Solve" fx:id="solveButton"/>
+            <Button text="Solve" fx:id="solveButton" onAction="#handleProcessFile"/>
         </VBox>
     </AnchorPane>
     
-    <!-- save container -->
-    <AnchorPane fx:id="saveContainer" prefWidth="220" prefHeight="260" 
-                AnchorPane.topAnchor="440" AnchorPane.leftAnchor="20">
-        <!-- save title: stretches full width and centers text -->
-        <Label text="Save" fx:id="containerTitle"
+    <!-- Save container -->
+    <AnchorPane fx:id="saveContainer" prefWidth="220" prefHeight="260" AnchorPane.topAnchor="510" AnchorPane.leftAnchor="40">
+        <Label text="Save" fx:id="saveTitle"
                AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
                alignment="CENTER" style="-fx-text-alignment: center;" prefHeight="50"/>
-        <!-- VBox holding buttons -->
         <VBox alignment="CENTER" spacing="10" prefWidth="220" prefHeight="100" AnchorPane.topAnchor="80">
-            <Button text="Save As Image" fx:id="saveImageButton">
+            <Button text="Save As Image" fx:id="saveImageButton" onAction="#handleSaveimg">
                 <VBox.margin>
                     <Insets top="10" right="0" bottom="20" left="0"/>
                 </VBox.margin>
             </Button>
-            <Button text="Save As Text" fx:id="saveTextButton"/>
+            <Button text="Save As Text" fx:id="saveTextButton" onAction="#handleSavetxt"/>
         </VBox>
     </AnchorPane>
     
-    <!-- back button -->
+    <!-- Result container -->
+    <AnchorPane fx:id="resultContainer" prefWidth="220" prefHeight="260" AnchorPane.topAnchor="310" AnchorPane.rightAnchor="40">
+        <Label text="Result" fx:id="resultTitle"
+               AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
+               alignment="CENTER" style="-fx-text-alignment: center;" prefHeight="50"/>
+        <VBox alignment="CENTER_LEFT" spacing="10" prefWidth="220" prefHeight="100" AnchorPane.topAnchor="80" style="-fx-padding: 0 0 0 17px;">
+            <Label text="Solution: " fx:id="solutionResult"
+                   AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
+                   alignment="CENTER_LEFT" style="-fx-text-alignment: center;" prefHeight="50"/>
+            <Label text="Attempts: " fx:id="attemptsResult"
+                   AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
+                   alignment="CENTER_LEFT" style="-fx-text-alignment: center;" prefHeight="50"/>
+            <Label text="Time: " fx:id="timeResult"
+                   AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
+                   alignment="CENTER_LEFT" style="-fx-text-alignment: center;" prefHeight="50"/>
+        </VBox>
+    </AnchorPane>
+    
+    <!-- Back and Reset button -->
     <Button text="Back" onAction="#handleBackButton" fx:id="back_button"
             AnchorPane.leftAnchor="9" AnchorPane.bottomAnchor="9"/>
-    
-    <!-- reset button -->
-    <Button text="Reset" fx:id="reset_button"
+    <Button text="Reset" fx:id="reset_button" onAction="#resetState" 
             AnchorPane.rightAnchor="9" AnchorPane.bottomAnchor="9"/>
     
 </AnchorPane>

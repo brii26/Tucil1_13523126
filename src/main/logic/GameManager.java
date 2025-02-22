@@ -1,34 +1,74 @@
 package main.logic;
 import java.util.ArrayList;
-import java.util.Scanner;
-
 import main.models.ReadFile;
-import main.models.WriteFile;
 
 
 public class GameManager {
-static String filename = "test/input.txt";
-static long attempt = 0;
-public static boolean solutionFound = false;
-public static char[][] grid_solution;
-static long startTime;
-static long endTime;
-    
-    //print shapes
-    static void printShapes(char[][][] shapeMatrices) {
-        for (int shapeIndex = 0; shapeIndex < shapeMatrices.length; shapeIndex++) {
-            System.out.println("Shape " + (shapeIndex+1) + ":");
-            char[][] shape = shapeMatrices[shapeIndex];
+    static String filename;
+    static long attempt = 0;
+    public static boolean solutionFound = false;
+    public static char[][] grid_solution;
+    static long startTime;
+    static long endTime;
+    static int iteration;
 
-            for (char[] row : shape) {
-                for (char c : row) {
-                    System.out.print(c);
+    public static PuzzleResult runSolver(String file) {
+        filename = file;
+        
+        int[] boardSpecs = ReadFile.BoardSpecs(filename);
+        String mode = ReadFile.configuration(filename);
+        int N = boardSpecs[0];
+        int M = boardSpecs[1];
+        
+        char[][][] shapes = ReadFile.Shapes(filename, boardSpecs[2]);
+        ArrayList<char[][]> listOfShapes = new ArrayList<>();
+        for(char[][] block : shapes) {
+            listOfShapes.add(block);
+        }
+
+        char[][] puzzle_board = new char[N][M];
+        puzzle_board = initialize_board(puzzle_board, N, M);
+
+        if(mode.equals("DEFAULT")){
+            attempt = 0;
+            solutionFound = false;
+            startTime = System.nanoTime();
+            bruteForce(listOfShapes, new boolean[listOfShapes.size()], puzzle_board, N, M);    
+            endTime = System.nanoTime();
+        }
+
+        long time = (endTime - startTime) / 1_000_000;
+
+        if(solutionFound){
+            System.out.println("Solution Found!\n");
+            print_board(grid_solution);
+            System.out.println("\nEstimated time: " + time + "ms");
+            System.out.println("Total attempts: " + attempt);
+
+        }
+        else {
+            System.out.println("No solution!");
+            System.out.println("Attempts: " + attempt);
+        }
+
+        return new PuzzleResult(solutionFound, attempt, time, grid_solution);
+    }
+        
+        //print shapes
+        static void printShapes(char[][][] shapeMatrices) {
+            for (int shapeIndex = 0; shapeIndex < shapeMatrices.length; shapeIndex++) {
+                System.out.println("Shape " + (shapeIndex+1) + ":");
+                char[][] shape = shapeMatrices[shapeIndex];
+
+                for (char[] row : shape) {
+                    for (char c : row) {
+                        System.out.print(c);
+                    }
+                    System.out.println(); 
                 }
                 System.out.println(); 
+                }
             }
-            System.out.println(); 
-            }
-        }
 
     //mirroring    
     public static char[][] mirrorVertical(char[][]matrix, int row, int column){
@@ -125,16 +165,20 @@ static long endTime;
         }
         return true;
     }
-
-    public static boolean gameSolved(char[][] grid, ArrayList<char[][]> listOfBlocks){
-        for(char[] row : grid){
-            for (char c : row){
-                if (c == '.'){
-                    return false;
+    public static boolean gameSolved(char[][] grid, boolean[] used) {
+        for (char[] row : grid) {
+            for (char c : row) {
+                if (c == '.') {
+                    return false; 
                 }
             }
         }
-        return true;
+        for (boolean blockUsed : used) {
+            if (!blockUsed) {
+                return false; 
+            }
+        }
+        return true; 
     }
 
     public static char[][] placeBlock(char[][] grid, char[][] block, int blockRow, int blockCol, int gridRowPosition, int gridColPosition, int gridRow, int gridCol){
@@ -181,7 +225,7 @@ static long endTime;
     //bruteforce
     public static void bruteForce(ArrayList<char[][]> listOfBlocks, boolean[] used, char[][] grid, int rowGrid, int colGrid) {
         attempt++;
-        if(gameSolved(grid, listOfBlocks)) {
+        if(gameSolved(grid, used)) {
             grid_solution = grid;
             solutionFound = true;
             return;
@@ -243,50 +287,5 @@ static long endTime;
         return false;
     }
 
-    public static void main(String[] args){
-        int[] BoardSpecs = ReadFile.BoardSpecs(filename);
-
-        String mode = ReadFile.configuration(filename);
-        int N = BoardSpecs[0];
-        int M = BoardSpecs[1];
-
-        char[][][] shapes =  ReadFile.Shapes(filename,BoardSpecs[2]);
-        ArrayList <char[][]> listOfShapes = new ArrayList<>();
-        for(char[][] blocks : shapes){
-            listOfShapes.add(blocks);
-        }
-
-        char[][] puzzle_board = new char[N][M];
-        puzzle_board = initialize_board(puzzle_board,N,M);
-        
-        if(mode.equals("DEFAULT")){
-            attempt = 0;
-            solutionFound = false;
-            startTime = System.nanoTime();
-            bruteForce(listOfShapes, new boolean[listOfShapes.size()], puzzle_board, N, M);    
-            endTime = System.nanoTime();
-        }
-        if(solutionFound){
-            System.out.println("Solution Found!\n");
-            print_board(grid_solution);
-            System.out.println("\nEstimated time: "+(endTime-startTime)/1_000_000 + "ms");
-            System.out.println("Total attempts: " + attempt);
-
-            Scanner scanner = new Scanner(System.in);
-            System.out.println("Save Solution? : (Y/N)");
-            char ch = scanner.next().charAt(0);
-            if(ch == 'Y'){
-                System.out.println("Solution file name (without .txt) : ");
-                String solution_file_name  = scanner.next();
-                WriteFile.writeSolutionBoard(grid_solution,solution_file_name);
-                System.out.println("Solution Saved !");
-            }
-            scanner.close();
-        }
-        if(!solutionFound) {
-            System.out.println("No solution!");
-            System.out.println("Attempts: " + attempt);
-        }
-    }
     
 }
