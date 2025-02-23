@@ -12,6 +12,16 @@ public class GameManager {
     static long endTime;
     static int iteration;
 
+    private static BoardUpdateListener boardUpdateListener;
+
+
+    public static void setBoardUpdateListener(BoardUpdateListener listener) {
+        boardUpdateListener = listener;
+    }
+
+    public interface BoardUpdateListener {
+        void onBoardUpdate(char[][] currentBoard);
+    }
     public static PuzzleResult runSolver(String file) {
         filename = file;
         
@@ -188,6 +198,10 @@ public class GameManager {
                     grid[gridRowPosition+i][gridColPosition+j] = block[i][j];
                 }
             }
+        }
+
+        if(boardUpdateListener != null){
+            boardUpdateListener.onBoardUpdate(copyGrid(grid)); //flag
         }
         return grid;
     }

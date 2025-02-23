@@ -2,6 +2,7 @@ package main.controllers;
 
 import javafx.scene.image.WritableImage;
 import javafx.stage.FileChooser;
+import javafx.concurrent.Task;
 import javafx.embed.swing.SwingFXUtils;
 import javax.imageio.ImageIO;
 import java.io.File;
@@ -59,14 +60,31 @@ public class MainController {
     private void handleProcessFile(javafx.event.ActionEvent event) {
         resetState();
         if (selectedFilePath != null && !selectedFilePath.isEmpty()) {
-            currentPuzzleResult = GameManager.runSolver(selectedFilePath); 
+            GameManager.setBoardUpdateListener(this::onBoardUpdate);
             
-            solutionResult.setText(currentPuzzleResult.isSolutionFound() ? "Solution: Found!" : "Solution: Not Found!");
-            attemptsResult.setText("Attempts: " + currentPuzzleResult.getAttempts());
-            timeResult.setText("Time: " + currentPuzzleResult.getTime() + " ms");
-            if (currentPuzzleResult.getGridSolution() != null && currentPuzzleResult.isSolutionFound()) {
-                updateGrid(currentPuzzleResult.getGridSolution());
-            }
+            Task<PuzzleResult> solverTask = new Task<>(){
+                @Override
+                protected PuzzleResult call() throws Exception{
+                    return GameManager.runSolver(selectedFilePath);
+                }
+            };
+
+            solverTask.setOnSucceeded(e -> {
+                currentPuzzleResult = solverTask.getValue();
+                solutionResult.setText(currentPuzzleResult.isSolutionFound() ? "Solution: Found!" : "Solution: Not Found!");
+                attemptsResult.setText("Attempts: " + currentPuzzleResult.getAttempts());
+                timeResult.setText("Time: " + currentPuzzleResult.getTime() + " ms");
+                if (currentPuzzleResult.getGridSolution() != null && currentPuzzleResult.isSolutionFound()) {
+                    updateGrid(currentPuzzleResult.getGridSolution());
+                }
+            });
+
+            solverTask.setOnFailed(e -> {
+                System.out.println("Solver task failed: " + solverTask.getException().getMessage());
+            });
+    
+            new Thread(solverTask).start();
+
         } else {
             System.out.println("No file selected.");
         }
@@ -79,7 +97,6 @@ public class MainController {
         attemptsResult.setText("Attempts: ");
         timeResult.setText("Time: ");
         gridPane.getChildren().clear();
-        gridPane.setGridLinesVisible(false);
         gridPane.setGridLinesVisible(true);
         
         gridContainer.setPrefWidth(750);
@@ -125,7 +142,6 @@ public class MainController {
             try {
                 String content = new String(Files.readAllBytes(Paths.get(selectedFilePath)));
                 System.out.println("File content: " + content);
-                resetState();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -264,5 +280,17 @@ public class MainController {
         alert.showAndWait();
     }
 
+    private boolean isUpdating = false;
+
+    private void onBoardUpdate(char[][] grid) {
+        if (!isUpdating) {
+            isUpdating = true;
+            javafx.application.Platform.runLater(() -> {
+                updateGrid(grid);
+                isUpdating = false;
+            });
+        }
+    }
+    
 
 }
