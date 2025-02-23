@@ -56,3 +56,4 @@ Aplikasi ini menawarkan beberapa fitur berguna untuk membantu pengguna menyelesa
    - Mengonversi solusi menjadi gambar dan menyimpannya.  
 5. **Atur Ulang** 🔄  
    - Mengatur ulang papan ke kondisi awal untuk mencoba solusi baru. 
+---
