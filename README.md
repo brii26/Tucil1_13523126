@@ -1,5 +1,5 @@
 # 🎯 IQ Puzzler Pro
-## Tugas Kecil 1 IF2211 Algorithm Strategies
+## Tugas Kecil 1 IF2211 Strategi Algoritma
 
 ---
 
