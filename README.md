@@ -4,7 +4,7 @@
 ---
 
 ## 📚 General Information
-**IQ Puzzler Pro** Proyek ini dikembangkan sebagai bagian dari Proyek Kecil 1 untuk mata kuliah **Strategi Algoritma**. Aplikasi ini menggunakan algoritma *Brute Force Backtracking* untuk menyelesaikan teka-teki penyusunan blok pada papan permainan IQ Puzzler.
+**IQ Puzzler Pro** Tugas ini dikembangkan sebagai bagian dari Tugas Kecil 1 untuk mata kuliah **Strategi Algoritma**. Aplikasi ini menggunakan algoritma *Brute Force Backtracking* untuk menyelesaikan teka-teki penyusunan blok pada papan permainan IQ Puzzler.
 
 ---
 
