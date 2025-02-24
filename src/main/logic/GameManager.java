@@ -63,22 +63,6 @@ public class GameManager {
 
         return new PuzzleResult(solutionFound, attempt, time, grid_solution);
     }
-        
-        //print shapes
-        static void printShapes(char[][][] shapeMatrices) {
-            for (int shapeIndex = 0; shapeIndex < shapeMatrices.length; shapeIndex++) {
-                System.out.println("Shape " + (shapeIndex+1) + ":");
-                char[][] shape = shapeMatrices[shapeIndex];
-
-                for (char[] row : shape) {
-                    for (char c : row) {
-                        System.out.print(c);
-                    }
-                    System.out.println(); 
-                }
-                System.out.println(); 
-                }
-            }
 
     //mirroring    
     public static char[][] mirrorVertical(char[][]matrix, int row, int column){
