@@ -44,16 +44,16 @@ mvn javafx:run
 
 
 ## 🛠️ Fitur  
-Aplikasi ini menawarkan beberapa fitur berguna untuk membantu pengguna menyelesaikan teka-teki IQ Puzzler:
+Aplikasi ini memiliki beberapa fitur pada GUI, yaitu: 
 
-1. **Unggah File** 📁  
-   - Memuat konfigurasi papan dan blok dari file eksternal.  
-2. **Selesaikan!** 🧩  
+1. **Upload File** 📁  
+   - Memuat konfigurasi papan dan blok dari file eksternal (.txt).  
+2. **Solve** 🧩  
    - Menggunakan algoritma *Brute Force Backtracking* untuk menemukan solusi.  
-3. **Simpan sebagai Teks** 📝  
+3. **Save as text** 📝  
    - Menyimpan solusi yang ditemukan dalam format teks.  
-4. **Simpan sebagai Gambar** 🖼️  
+4. **Simpan as image** 🖼️  
    - Mengonversi solusi menjadi gambar dan menyimpannya.  
-5. **Atur Ulang** 🔄  
-   - Mengatur ulang papan ke kondisi awal untuk mencoba solusi baru. 
+5. **Reset** 🔄  
+   - Mengatur ulang papan ke kondisi awal untuk mencoba solusi baru. (Reset hanya dapat digunakan setelah solusi ditemukan atau belum ditemukan, selama program masih mencari solusi, reset tidak berfungsi) 
 ---
